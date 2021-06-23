@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Menu from "./Components/Menu";
 import Brand from "./Components/Brand";
 import Error from "./Components/Error";
-import Quotes from "./Components/Quote";
+import Pokemon from "./Components/Pokemon";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
             <Brand />
           </Route>
           <Route path="/">
-            <Quotes />
+            <Pokemon />
           </Route>
         </Switch>
       </Router>

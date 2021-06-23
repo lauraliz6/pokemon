@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "inspirational-quotes": "^1.0.8"
+    "inspirational-quotes": "^1.0.8",
+    "pokedex-promise-v2": "^3.3.2"
   }
 }
