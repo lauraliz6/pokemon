@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get("/", function (req, res) {
+app.get("/poke", function (req, res) {
   const inName = req.query.name;
   P.getPokemonByName(inName) // with Promise
     .then(function (response) {
@@ -23,6 +23,22 @@ app.get("/", function (req, res) {
       poke.name = name;
       poke.img = img;
       res.send(poke);
+    })
+    .catch(function (error) {
+      console.log("There was an ERROR: ", error);
+    });
+});
+
+app.get("/gens", function (req, res) {
+  const inGen = req.query.gen;
+  P.getGenerationByName(inGen)
+    .then(function (response) {
+      let typeList = [];
+      const types = response.types;
+      for (const type of types) {
+        typeList.push(type.name);
+      }
+      res.send(typeList);
     })
     .catch(function (error) {
       console.log("There was an ERROR: ", error);
