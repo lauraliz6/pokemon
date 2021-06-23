@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Menu from "./Components/Menu";
 import Brand from "./Components/Brand";
 import Error from "./Components/Error";
+//adding a comment
 
 function App() {
   return (
