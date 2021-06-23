@@ -14,7 +14,8 @@ app.use(function (req, res, next) {
 });
 
 app.get("/", function (req, res) {
-  P.getPokemonByName("eevee") // with Promise
+  const inName = req.query.name;
+  P.getPokemonByName(inName) // with Promise
     .then(function (response) {
       const name = response.name;
       const img = response.sprites.front_default;
