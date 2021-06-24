@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 function Pokemon() {
   const [name, setName] = useState("");
@@ -16,17 +16,66 @@ function Pokemon() {
       });
   }
 
-  function listPokemon() {
-    const pokeGen = document.getElementById("pokeGen").value;
+  const listPokemon = function (callback) {
     axios
-      .get("http://localhost:5000/gens", {
+      .get("http://localhost:5000/list", {
         crossdomain: true,
-        params: { gen: pokeGen },
       })
       .then((response) => {
-        console.log(response);
+        let genList = [];
+        const gList = response.data.gens.results;
+        for (var i = 0; i < gList.length; i++) {
+          let gen = gList[i];
+          genList.push(gen.name);
+        }
+        let typeList = [];
+        const tList = response.data.types.results;
+        for (var i = 0; i < tList.length; i++) {
+          let type = tList[i];
+          typeList.push(type.name);
+        }
+        const listInfo = {};
+        listInfo.gens = genList;
+        listInfo.types = typeList;
+        callback(listInfo);
       });
-  }
+  };
+
+  useEffect(() => {
+    listPokemon(function (response) {
+      const gens = response.gens;
+      const selectGen = document.getElementById("pokeGen");
+      for (var g = 0; g < gens.length; g++) {
+        let genName = gens[g];
+        let propGenName = capitalize(genName, "-", "true");
+        selectGen.innerHTML += `<option value="${genName}">${propGenName}</option>`;
+      }
+      const types = response.types;
+      const selectType = document.getElementById("pokeType");
+      for (var t = 0; t < types.length; t++) {
+        let typeName = types[t];
+        let propTypeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+        selectType.innerHTML += `<option value="${typeName}">${propTypeName}</option>`;
+      }
+    });
+  });
+
+  const capitalize = (s, spl, gen) => {
+    let strArr = s.split(spl);
+    let arr = "";
+    for (var i = 0; i < strArr.length; i++) {
+      let curStr = strArr[i];
+      let cap = "";
+      cap = curStr.charAt(0).toUpperCase() + curStr.slice(1);
+      if (gen === "true") {
+        if (i === 1) {
+          cap = curStr.toUpperCase();
+        }
+      }
+      arr += cap + " ";
+    }
+    return arr;
+  };
 
   return (
     <div>
@@ -38,40 +87,13 @@ function Pokemon() {
 
       <div>
         <p>Narrow by Generation and/or Type</p>
-        <select id="pokeGen" onChange={listPokemon}>
+        <select id="pokeGen">
           <option value="all">All</option>
-          <option value="generation-i">Generation I</option>
-          <option value="generation-ii">Generation II</option>
-          <option value="generation-iii">Generation III</option>
-          <option value="generation-iv">Generation IV</option>
-          <option value="generation-v">Generation V</option>
-          <option value="generation-vi">Generation VI</option>
-          <option value="generation-vii">Generation VII</option>
-          <option value="generation-viii">Generation VIII</option>
         </select>
-        <select id="pokeType" onChange={listPokemon}>
+        <select id="pokeType">
           <option value="all">All</option>
-          <option value="normal">Normal</option>
-          <option value="fighting">Fighting</option>
-          <option value="flying">Flying</option>
-          <option value="poison">Poison</option>
-          <option value="ground">Ground</option>
-          <option value="rock">Rock</option>
-          <option value="bug">Bug</option>
-          <option value="ghost">Ghost</option>
-          <option value="steel">Steel</option>
-          <option value="fire">Fire</option>
-          <option value="water">Water</option>
-          <option value="grass">Grass</option>
-          <option value="electric">Electric</option>
-          <option value="psychic">Psychic</option>
-          <option value="ice">Ice</option>
-          <option value="dragon">Dragon</option>
-          <option value="dark">Dark</option>
-          <option value="fairy">Fairy</option>
-          <option value="unknown">Unknown</option>
-          <option value="shadow">Shadow</option>
         </select>
+        <button>Go</button>
       </div>
 
       <div>

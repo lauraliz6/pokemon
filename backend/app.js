@@ -29,20 +29,33 @@ app.get("/poke", function (req, res) {
     });
 });
 
-app.get("/gens", function (req, res) {
-  const inGen = req.query.gen;
-  P.getGenerationByName(inGen)
-    .then(function (response) {
-      let typeList = [];
-      const types = response.types;
-      for (const type of types) {
-        typeList.push(type.name);
-      }
-      res.send(typeList);
+// const inGen = req.query.gen;
+// P.getGenerationByName(inGen)
+//   .then(function (response) {
+//     let typeList = [];
+//     const types = response.types;
+//     for (const type of types) {
+//       typeList.push(type.name);
+//     }
+//     res.send(typeList);
+//   })
+//   .catch(function (error) {
+//     console.log("There was an ERROR: ", error);
+//   });
+
+app.get("/list", function (req, res) {
+  const lists = {};
+  P.getGenerationsList()
+    .then(function (response1) {
+      lists.gens = response1;
     })
-    .catch(function (error) {
-      console.log("There was an ERROR: ", error);
-    });
+    .then(
+      P.getTypesList()
+        .then(function (response2) {
+          lists.types = response2;
+        })
+        .then(() => res.send(lists))
+    );
 });
 
 let port = process.env.PORT;
