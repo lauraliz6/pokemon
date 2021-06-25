@@ -29,20 +29,6 @@ app.get("/poke", function (req, res) {
     });
 });
 
-// const inGen = req.query.gen;
-// P.getGenerationByName(inGen)
-//   .then(function (response) {
-//     let typeList = [];
-//     const types = response.types;
-//     for (const type of types) {
-//       typeList.push(type.name);
-//     }
-//     res.send(typeList);
-//   })
-//   .catch(function (error) {
-//     console.log("There was an ERROR: ", error);
-//   });
-
 app.get("/list", function (req, res) {
   const lists = {};
   P.getGenerationsList()
@@ -55,6 +41,40 @@ app.get("/list", function (req, res) {
           lists.types = response2;
         })
         .then(() => res.send(lists))
+    );
+});
+
+app.get("/pokelist", function (req, res) {
+  const inGen = req.query.gen;
+  const inType = req.query.type;
+  let genPokes = [];
+  let typePokes = [];
+  if (inGen === "all") {
+  }
+  P.getGenerationByName(inGen)
+    .then(function (response1) {
+      const species = response1.pokemon_species;
+      for (const spec of species) {
+        genPokes.push(spec.name);
+      }
+    })
+    .catch(function (error) {
+      console.log("There was an ERROR: ", error);
+    })
+    .then(
+      P.getTypeByName(inType)
+        .then(function (response2) {
+          const mons = response2.pokemon;
+          for (const mon of mons) {
+            typePokes.push(mon.pokemon.name);
+          }
+        })
+        .catch(function (error) {
+          console.log("There was an ERROR: ", error);
+        })
+        .then(() => {
+          res.send({ genPs: genPokes, typePs: typePokes });
+        })
     );
 });
 

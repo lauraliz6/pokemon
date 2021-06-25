@@ -3,6 +3,7 @@ import axios from "axios";
 function Pokemon() {
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
+
   function getPokemon() {
     const pokeName = document.getElementById("pokeName").value;
     axios
@@ -30,8 +31,8 @@ function Pokemon() {
         }
         let typeList = [];
         const tList = response.data.types.results;
-        for (var i = 0; i < tList.length; i++) {
-          let type = tList[i];
+        for (var j = 0; j < tList.length; j++) {
+          let type = tList[j];
           typeList.push(type.name);
         }
         const listInfo = {};
@@ -40,6 +41,31 @@ function Pokemon() {
         callback(listInfo);
       });
   };
+
+  function getPokeList() {
+    const selectedGen = document.getElementById("pokeGen").value;
+    const selectedType = document.getElementById("pokeType").value;
+    const pokeList = document.getElementById("pokeList");
+    let commonPs;
+    axios
+      .get("http://localhost:5000/pokelist", {
+        crossdomain: true,
+        params: { gen: selectedGen, type: selectedType },
+      })
+      .then((response) => {
+        const genPs = response.data.genPs;
+        const typePs = response.data.typePs;
+        commonPs = getCommonItems(genPs, typePs);
+      })
+      .then(() => {
+        pokeList.innerHTML = "";
+        for (var c = 0; c < commonPs.length; c++) {
+          let pokeName = commonPs[c];
+          let propName = capitalize(pokeName, "-", "false");
+          pokeList.innerHTML += `<option value="${pokeName}">${propName}</option>`;
+        }
+      });
+  }
 
   useEffect(() => {
     listPokemon(function (response) {
@@ -77,8 +103,28 @@ function Pokemon() {
     return arr;
   };
 
+  function getCommonItems(array1, array2) {
+    var common = []; // Initialize array to contain common items
+
+    for (var i = 0; i < array1.length; i++) {
+      for (var j = 0; j < array2.length; j++) {
+        if (array1[i] == array2[j]) {
+          // If item is present in both arrays
+          common.push(array1[i]); // Push to common array
+        }
+      }
+    }
+
+    return common; // Return the common items
+  }
+
   return (
     <div>
+      <div>
+        <h1>{name}</h1>
+        <img src={img} alt={name} />
+      </div>
+
       <div>
         <p>Direct search: (if you know what you want)</p>
         <input type="text" id="pokeName" />
@@ -93,12 +139,9 @@ function Pokemon() {
         <select id="pokeType">
           <option value="all">All</option>
         </select>
-        <button>Go</button>
-      </div>
-
-      <div>
-        <h1>{name}</h1>
-        <img src={img} alt={name} />
+        <button onClick={getPokeList}>Go</button>
+        <br />
+        <select id="pokeList"></select>
       </div>
     </div>
   );
