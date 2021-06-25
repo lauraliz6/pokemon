@@ -3,13 +3,16 @@ import axios from "axios";
 function Pokemon() {
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
+  const [inPoke, setInPoke] = useState("");
+  const handleChange = (e) => {
+    setInPoke(e.target.value);
+  };
 
   function getPokemon() {
-    const pokeName = document.getElementById("pokeName").value;
     axios
       .get("http://localhost:5000/poke", {
         crossdomain: true,
-        params: { name: pokeName },
+        params: { name: inPoke },
       })
       .then((response) => {
         setName(response.data.name);
@@ -46,6 +49,10 @@ function Pokemon() {
     const selectedGen = document.getElementById("pokeGen").value;
     const selectedType = document.getElementById("pokeType").value;
     const pokeList = document.getElementById("pokeList");
+    if (selectedGen === "all" && selectedType === "all") {
+      alert("please select at least one drop down to narrow by");
+      return;
+    }
     let commonPs;
     axios
       .get("http://localhost:5000/pokelist", {
@@ -53,9 +60,7 @@ function Pokemon() {
         params: { gen: selectedGen, type: selectedType },
       })
       .then((response) => {
-        const genPs = response.data.genPs;
-        const typePs = response.data.typePs;
-        commonPs = getCommonItems(genPs, typePs);
+        commonPs = response.data;
       })
       .then(() => {
         pokeList.innerHTML = "";
@@ -103,21 +108,6 @@ function Pokemon() {
     return arr;
   };
 
-  function getCommonItems(array1, array2) {
-    var common = []; // Initialize array to contain common items
-
-    for (var i = 0; i < array1.length; i++) {
-      for (var j = 0; j < array2.length; j++) {
-        if (array1[i] == array2[j]) {
-          // If item is present in both arrays
-          common.push(array1[i]); // Push to common array
-        }
-      }
-    }
-
-    return common; // Return the common items
-  }
-
   return (
     <div>
       <div>
@@ -127,7 +117,12 @@ function Pokemon() {
 
       <div>
         <p>Direct search: (if you know what you want)</p>
-        <input type="text" id="pokeName" />
+        <input
+          type="text"
+          id="pokeName"
+          value={inPoke}
+          onChange={handleChange}
+        />
         <button onClick={getPokemon}>Generate Pokemon</button>
       </div>
 
@@ -141,7 +136,8 @@ function Pokemon() {
         </select>
         <button onClick={getPokeList}>Go</button>
         <br />
-        <select id="pokeList"></select>
+        <select id="pokeList" onChange={handleChange}></select>
+        <button onClick={getPokemon}>Generate Pokemon</button>
       </div>
     </div>
   );
