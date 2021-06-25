@@ -64,6 +64,7 @@ function Pokemon() {
       })
       .then(() => {
         pokeList.innerHTML = "";
+        setInPoke(commonPs[0]);
         for (var c = 0; c < commonPs.length; c++) {
           let pokeName = commonPs[c];
           let propName = capitalize(pokeName, "-", "false");
@@ -74,15 +75,17 @@ function Pokemon() {
 
   useEffect(() => {
     listPokemon(function (response) {
-      const gens = response.gens;
       const selectGen = document.getElementById("pokeGen");
+      const selectType = document.getElementById("pokeType");
+      selectGen.innerHTML = "<option value='all'>All</option>";
+      selectType.innerHTML = "<option value='all'>All</option>";
+      const gens = response.gens;
       for (var g = 0; g < gens.length; g++) {
         let genName = gens[g];
         let propGenName = capitalize(genName, "-", "true");
         selectGen.innerHTML += `<option value="${genName}">${propGenName}</option>`;
       }
       const types = response.types;
-      const selectType = document.getElementById("pokeType");
       for (var t = 0; t < types.length; t++) {
         let typeName = types[t];
         let propTypeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
