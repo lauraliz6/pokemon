@@ -27,6 +27,20 @@ function Pokemon() {
       });
   }
 
+  function pickPokemon() {
+    const picked = document.getElementById("pokePick").value;
+    setInPoke(picked);
+    axios
+      .get("http://localhost:5000/poke", {
+        crossdomain: true,
+        params: { name: picked },
+      })
+      .then((response) => {
+        setName(response.data.name);
+        setImg(response.data.img);
+      });
+  }
+
   async function listPokemon() {
     const inGen = document.getElementById("inGen").value;
     const inType = document.getElementById("inType").value;
@@ -65,7 +79,7 @@ function Pokemon() {
         <br />
         <br />
         <PokemonDropdown list={pokeList} />
-        <button onClick={getPokemon}>Generate Pokemon</button>
+        <button onClick={pickPokemon}>Generate Pokemon</button>
       </div>
     </div>
   );

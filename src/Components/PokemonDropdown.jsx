@@ -21,9 +21,8 @@ function PokemonDropdown(props) {
   const list = props.list;
   return (
     <div>
-      <select>
+      <select id="pokePick">
         {list.map((item) => {
-          // using props in child component and looping
           return (
             <option key={item} value={item}>
               {capitalize(item, "-", "false")}
