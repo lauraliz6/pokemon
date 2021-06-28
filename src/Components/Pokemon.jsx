@@ -17,7 +17,7 @@ function Pokemon() {
 
   function getPokemon() {
     axios
-      .get("http://localhost:5000/poke", {
+      .get("https://pure-shore-76323.herokuapp.com/poke", {
         crossdomain: true,
         params: { name: inPoke },
       })
@@ -31,7 +31,7 @@ function Pokemon() {
     const picked = document.getElementById("pokePick").value;
     setInPoke(picked);
     axios
-      .get("http://localhost:5000/poke", {
+      .get("https://pure-shore-76323.herokuapp.com/poke", {
         crossdomain: true,
         params: { name: picked },
       })
@@ -47,7 +47,7 @@ function Pokemon() {
     const enGen = encodeURIComponent(inGen);
     const enType = encodeURIComponent(inType);
     const response = await fetch(
-      `http://localhost:5000/pokelist?gen=${enGen}&type=${enType}`
+      `https://pure-shore-76323.herokuapp.com/pokelist?gen=${enGen}&type=${enType}`
     );
     const body = await response.json();
     setPokeList(body);
