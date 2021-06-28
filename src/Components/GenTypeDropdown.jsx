@@ -1,41 +1,91 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 function GenTypeDropdown() {
-  const [gLoading, setgLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
+
   const [genList, setGens] = useState([{ label: "Loading...", value: "" }]);
-  const [gValue, setgValue] = useState();
+  const [gValue, setgValue] = useState("all");
+
+  const [typeList, setTypes] = useState([{ label: "Loading...", value: "" }]);
+  const [tValue, settValue] = useState("all");
+
+  const capitalize = (s, spl, gen) => {
+    let strArr = s.split(spl);
+    let arr = "";
+    for (var i = 0; i < strArr.length; i++) {
+      let curStr = strArr[i];
+      let cap = "";
+      cap = curStr.charAt(0).toUpperCase() + curStr.slice(1);
+      if (gen === "true") {
+        if (i === 1) {
+          cap = curStr.toUpperCase();
+        }
+      }
+      arr += cap + " ";
+    }
+    return arr;
+  };
 
   useEffect(() => {
     let unmounted = false;
-    async function getGens() {
+    async function getGensTypes() {
       const response = await fetch("http://localhost:5000/list");
       const body = await response.json();
       if (!unmounted) {
         setGens(
-          body.gens.results.map(({ name }) => ({ label: name, value: name }))
+          body.gens.results.map(({ name }) => ({
+            label: capitalize(name, "-", "true"),
+            value: name,
+          }))
         );
-        setgLoading(false);
+        setTypes(
+          body.types.results.map(({ name }) => ({
+            label: capitalize(name, " ", "false"),
+            value: name,
+          }))
+        );
+        setLoading(false);
       }
     }
-    getGens();
+    getGensTypes();
     return () => {
       unmounted = true;
     };
   }, []);
 
   return (
-    <select
-      disabled={gLoading}
-      value={gValue}
-      onChange={(e) => setgValue(e.currentTarget.value)}
-    >
-      {genList.map((gen) => (
-        <option key={gen.value} value={gen.value}>
-          {gen.label}
+    <div>
+      <select
+        disabled={loading}
+        value={gValue}
+        onChange={(e) => setgValue(e.currentTarget.value)}
+        id="inGen"
+      >
+        <option key="all" value="all">
+          All
         </option>
-      ))}
-    </select>
+        {genList.map((gen) => (
+          <option key={gen.value} value={gen.value}>
+            {gen.label}
+          </option>
+        ))}
+      </select>
+      <select
+        disabled={loading}
+        value={tValue}
+        onChange={(e) => settValue(e.currentTarget.value)}
+        id="inType"
+      >
+        <option key="all" value="all">
+          All
+        </option>
+        {typeList.map((type) => (
+          <option key={type.value} value={type.value}>
+            {type.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
