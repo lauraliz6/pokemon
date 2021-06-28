@@ -79,14 +79,14 @@ function Pokemon() {
       });
   }
 
-  // useEffect(() => {
-  //   listPokemon(function (response) {
-  //     const gens = response.gens;
-  //     setGens(gens.map((gen) => gen));
-  //     const types = response.types;
-  //     setTypes(types.map((type) => type));
-  //   });
-  // });
+  useEffect(() => {
+    listPokemon(function (response) {
+      const gens = response.gens;
+      setGens(gens.map((gen) => gen));
+      const types = response.types;
+      setTypes(types.map((type) => type));
+    });
+  });
 
   const capitalize = (s, spl, gen) => {
     let strArr = s.split(spl);
@@ -125,7 +125,20 @@ function Pokemon() {
 
       <div>
         <p>Narrow by Generation and/or Type</p>
-        <GenTypeDropdown />
+        <select id="pokeGen">
+          {genList.map((gen) => (
+            <option key={gen} value={gen}>
+              {capitalize(gen, "-", "true")}
+            </option>
+          ))}
+        </select>
+        <select id="pokeType">
+          {typeList.map((type) => (
+            <option key={type} value={type}>
+              {capitalize(type, " ", "false")}
+            </option>
+          ))}
+        </select>
         <button onClick={getPokeList}>Go</button>
         <br />
         <select id="pokeList" onChange={handleChange}></select>
