@@ -29,9 +29,7 @@ function GenTypeDropdown() {
   useEffect(() => {
     let unmounted = false;
     async function getGensTypes() {
-      const response = await fetch(
-        "https://pure-shore-76323.herokuapp.com/list"
-      );
+      const response = await fetch("http://localhost:5000/list");
       const body = await response.json();
       if (!unmounted) {
         setGens(
