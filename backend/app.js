@@ -19,9 +19,13 @@ app.get("/poke", function (req, res) {
     .then(function (response) {
       const name = response.name;
       const img = response.sprites.front_default;
+      const weight = response.weight;
+      const abilities = response.abilities;
       const poke = {};
       poke.name = name;
       poke.img = img;
+      poke.weight = weight;
+      poke.abilities = abilities;
       res.send(poke);
     })
     .catch(function (error) {

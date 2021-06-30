@@ -7,9 +7,12 @@ import PokemonDropdown from "./PokemonDropdown";
 function Pokemon() {
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
+  const [weight, setWeight] = useState("");
+  const [abilities, setAbilities] = useState([]);
   const [inPoke, setInPoke] = useState("");
   const [pokeList, setPokeList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [party, setParty] = useState([]);
 
   const handleChange = (e) => {
     setInPoke(e.target.value);
@@ -24,6 +27,8 @@ function Pokemon() {
       .then((response) => {
         setName(response.data.name);
         setImg(response.data.img);
+        setWeight(response.data.weight);
+        setAbilities(response.data.abilities);
       });
   }
 
@@ -38,6 +43,8 @@ function Pokemon() {
       .then((response) => {
         setName(response.data.name);
         setImg(response.data.img);
+        setWeight(response.data.weight);
+        setAbilities(response.data.abilities);
       });
   }
 
@@ -54,11 +61,45 @@ function Pokemon() {
     setLoading(false);
   }
 
+  const capitalize = (s, spl, gen) => {
+    let strArr = s.split(spl);
+    let arr = "";
+    for (var i = 0; i < strArr.length; i++) {
+      let curStr = strArr[i];
+      let cap = "";
+      cap = curStr.charAt(0).toUpperCase() + curStr.slice(1);
+      if (gen === "true") {
+        if (i === 1) {
+          cap = curStr.toUpperCase();
+        }
+      }
+      arr += cap + " ";
+    }
+    return arr;
+  };
+
+  const weightToLb = (weight) => {
+    const kg = weight / 10;
+    const lb = kg * 2.2046;
+    const pounds = Math.round(lb);
+    return pounds;
+  };
+
   return (
     <div>
       <div>
         <h1>{name}</h1>
         <img src={img} alt={name} />
+        <p>Weight: {weightToLb(weight)} lb</p>
+        <p>Abilities:</p>
+        <ol>
+          {abilities.map((abil) => (
+            <li key={abil.ability.name} value={abil.ability.name}>
+              {capitalize(abil.ability.name, "-", "false")}
+            </li>
+          ))}
+        </ol>
+        <button>Save to My Party</button>
       </div>
 
       <div>
@@ -80,6 +121,10 @@ function Pokemon() {
         <br />
         <PokemonDropdown list={pokeList} />
         <button onClick={pickPokemon}>Generate Pokemon</button>
+      </div>
+
+      <div>
+        <h2>My Party</h2>
       </div>
     </div>
   );
