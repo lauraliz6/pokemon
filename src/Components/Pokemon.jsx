@@ -3,6 +3,7 @@ import axios from "axios";
 
 import GenTypeDropdown from "./GenTypeDropdown";
 import PokemonDropdown from "./PokemonDropdown";
+import Party from "./Party";
 
 function Pokemon() {
   const [name, setName] = useState("");
@@ -85,6 +86,13 @@ function Pokemon() {
     return pounds;
   };
 
+  //NEED TO ADD - LIMIT TO 6; NO DUPLICATES; INCLUDE PICTURE, WEIGHT, ABILITIES
+  const addToParty = () => {
+    if (inPoke) {
+      setParty([...party, { name: inPoke }]);
+    }
+  };
+
   return (
     <div>
       <div>
@@ -99,7 +107,7 @@ function Pokemon() {
             </li>
           ))}
         </ol>
-        <button>Save to My Party</button>
+        <button onClick={addToParty}>Save to My Party</button>
       </div>
 
       <div>
@@ -123,9 +131,7 @@ function Pokemon() {
         <button onClick={pickPokemon}>Generate Pokemon</button>
       </div>
 
-      <div>
-        <h2>My Party</h2>
-      </div>
+      <Party party={party} />
     </div>
   );
 }
