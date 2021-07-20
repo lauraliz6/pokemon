@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 function Party(props) {
   const party = props.party;
@@ -7,7 +7,10 @@ function Party(props) {
     <div>
       <h2>My Party</h2>
       {party.map((p, index) => (
-        <p key={index}>{p.name}</p>
+        <div key={index}>
+          <img src={p.img} alt={p.name} />
+          <p>{p.name}</p>
+        </div>
       ))}
     </div>
   );

@@ -86,10 +86,13 @@ function Pokemon() {
     return pounds;
   };
 
-  //NEED TO ADD - LIMIT TO 6; NO DUPLICATES; INCLUDE PICTURE, WEIGHT, ABILITIES
   const addToParty = () => {
-    if (inPoke) {
-      setParty([...party, { name: inPoke }]);
+    let inParty = party.find((member) => member.name === inPoke);
+    if (inPoke && party.length < 6 && !inParty) {
+      setParty([
+        ...party,
+        { name: name, img: img, lbs: weightToLb(weight), abils: abilities },
+      ]);
     }
   };
 
@@ -107,7 +110,9 @@ function Pokemon() {
             </li>
           ))}
         </ol>
-        <button onClick={addToParty}>Save to My Party</button>
+        {party.length < 6 && (
+          <button onClick={addToParty}>Save to My Party</button>
+        )}
       </div>
 
       <div>
