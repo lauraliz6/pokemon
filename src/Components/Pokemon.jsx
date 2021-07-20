@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+
 import GenTypeDropdown from "./GenTypeDropdown";
 import PokemonDropdown from "./PokemonDropdown";
 import Party from "./Party";
@@ -97,47 +102,58 @@ function Pokemon() {
   };
 
   return (
-    <div>
-      <div>
-        <h1>{name}</h1>
-        <img src={img} alt={name} />
-        <p>Weight: {weightToLb(weight)} lb</p>
-        <p>Abilities:</p>
-        <ol>
-          {abilities.map((abil) => (
-            <li key={abil.ability.name} value={abil.ability.name}>
-              {capitalize(abil.ability.name, "-", "false")}
-            </li>
-          ))}
-        </ol>
-        {party.length < 6 && (
-          <button onClick={addToParty}>Save to My Party</button>
-        )}
-      </div>
+    <Container>
+      <Row>
+        <Card style={{ width: "30%" }}>
+          <Card.Img src={img} alt={name} />
+          <Card.Title>{name}</Card.Title>
+          <Card.Text>
+            <p>Weight: {weightToLb(weight)} lb</p>
+            <p>Abilities:</p>
+            <ol>
+              {abilities.map((abil) => (
+                <li key={abil.ability.name} value={abil.ability.name}>
+                  {capitalize(abil.ability.name, "-", "false")}
+                </li>
+              ))}
+            </ol>
+          </Card.Text>
 
-      <div>
-        <p>Direct search: (if you know what you want)</p>
-        <input
-          type="text"
-          id="pokeName"
-          value={inPoke}
-          onChange={handleChange}
-        />
-        <button onClick={getPokemon}>Generate Pokemon</button>
-      </div>
+          {party.length < 6 && (
+            <Button variant="secondary" onClick={addToParty}>
+              Save to My Party
+            </Button>
+          )}
+        </Card>
 
-      <div>
-        <p>Narrow by Generation and/or Type</p>
-        <GenTypeDropdown />
-        <button onClick={listPokemon}>Go</button>
-        <br />
-        <br />
-        <PokemonDropdown list={pokeList} />
-        <button onClick={pickPokemon}>Generate Pokemon</button>
-      </div>
+        <Card style={{ width: "30%" }}>
+          <p>Direct search: (if you know what you want)</p>
+          <input
+            type="text"
+            id="pokeName"
+            value={inPoke}
+            onChange={handleChange}
+          />
+          <Button variant="primary" onClick={getPokemon}>
+            Generate Pokemon
+          </Button>
 
-      <Party party={party} />
-    </div>
+          <p>Narrow by Generation and/or Type</p>
+          <GenTypeDropdown />
+          <Button variant="secondary" onClick={listPokemon}>
+            Go
+          </Button>
+          <br />
+          <br />
+          <PokemonDropdown list={pokeList} />
+          <Button variant="primary" onClick={pickPokemon}>
+            Generate Pokemon
+          </Button>
+        </Card>
+
+        <Party party={party} />
+      </Row>
+    </Container>
   );
 }
 export default Pokemon;
