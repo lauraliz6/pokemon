@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 function PokemonDropdown(props) {
+  const passPoke = (event) => {
+    props.parentCallback(event.target.value);
+  };
+
   const capitalize = (s, spl, gen) => {
     let strArr = s.split(spl);
     let arr = "";
@@ -21,7 +25,7 @@ function PokemonDropdown(props) {
   const list = props.list;
   return (
     <div>
-      <select id="pokePick">
+      <select id="pokePick" onChange={passPoke}>
         {list.map((item) => {
           return (
             <option key={item} value={item}>

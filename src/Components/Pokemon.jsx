@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 
 import GenTypeDropdown from "./GenTypeDropdown";
 import PokemonDropdown from "./PokemonDropdown";
@@ -30,27 +31,16 @@ function Pokemon() {
     setInPoke(e.target.value);
   };
 
+  const handleSelect = (dropDownData) => {
+    setInPoke(dropDownData);
+    console.log(inPoke);
+  };
+
   function getPokemon() {
     axios
       .get("http://localhost:5000/poke", {
         crossdomain: true,
         params: { name: inPoke },
-      })
-      .then((response) => {
-        setName(response.data.name);
-        setImg(response.data.img);
-        setWeight(response.data.weight);
-        setAbilities(response.data.abilities);
-      });
-  }
-
-  function pickPokemon() {
-    const picked = document.getElementById("pokePick").value;
-    setInPoke(picked);
-    axios
-      .get("http://localhost:5000/poke", {
-        crossdomain: true,
-        params: { name: picked },
       })
       .then((response) => {
         setName(response.data.name);
@@ -110,13 +100,8 @@ function Pokemon() {
   return (
     <Container>
       <Row>
-        <Col>
-          <Container
-            style={{
-              width: "590px",
-              margin: "0",
-            }}
-          >
+        <Col style={{ alignItems: "center", width: "590px", margin: "0" }}>
+          <Container style={{ padding: "0" }}>
             <Row style={{ alignItems: "center", border: "1px solid black" }}>
               <Col>
                 <img src={img} alt={name} style={{ width: "275px" }} />
@@ -147,30 +132,45 @@ function Pokemon() {
             </Row>
           </Container>
 
-          <Card style={{ width: "30%" }}>
-            <p>Direct search: (if you know what you want)</p>
-            <input
-              type="text"
-              id="pokeName"
-              value={inPoke}
-              onChange={handleChange}
-            />
-            <Button variant="primary" onClick={getPokemon}>
-              Generate Pokemon
-            </Button>
+          <Container fluid style={{ padding: "0" }}>
+            <Row
+              style={{
+                alignItems: "center",
+                border: "1px solid black",
+                padding: "40px",
+              }}
+            >
+              <h2>Search</h2>
+              <InputGroup>
+                <InputGroup.Text>By name:</InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  id="pokeName"
+                  value={inPoke}
+                  onChange={handleChange}
+                />
+              </InputGroup>
 
-            <p>Narrow by Generation and/or Type</p>
-            <GenTypeDropdown />
-            <Button variant="secondary" onClick={listPokemon}>
-              Go
-            </Button>
-            <br />
-            <br />
-            <PokemonDropdown list={pokeList} />
-            <Button variant="primary" onClick={pickPokemon}>
-              Generate Pokemon
-            </Button>
-          </Card>
+              <Row>
+                <Form>
+                  <Form.Label>Narrow by generation and/or type</Form.Label>
+                  <Col>
+                    <GenTypeDropdown />
+                  </Col>
+                  <Col>
+                    <Button variant="secondary" onClick={listPokemon}>
+                      Go
+                    </Button>
+                  </Col>
+                </Form>
+              </Row>
+              <PokemonDropdown list={pokeList} parentCallback={handleSelect} />
+
+              <Button variant="primary" onClick={getPokemon}>
+                Generate Pokemon
+              </Button>
+            </Row>
+          </Container>
         </Col>
 
         <Party party={party} />

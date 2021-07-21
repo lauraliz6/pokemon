@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+
 function GenTypeDropdown() {
   const [loading, setLoading] = React.useState(true);
 
@@ -54,38 +59,48 @@ function GenTypeDropdown() {
   }, []);
 
   return (
-    <div>
-      <select
-        disabled={loading}
-        value={gValue}
-        onChange={(e) => setgValue(e.currentTarget.value)}
-        id="inGen"
-      >
-        <option key="all" value="all">
-          All
-        </option>
-        {genList.map((gen) => (
-          <option key={gen.value} value={gen.value}>
-            {gen.label}
+    <Row style={{ justifyContent: "stretch" }}>
+      <Col md>
+        <Form.Control
+          as="select"
+          disabled={loading}
+          value={gValue}
+          onChange={(e) => setgValue(e.currentTarget.value)}
+          id="inGen"
+          style={{ width: "100%" }}
+        >
+          <option key="all" value="all">
+            All
           </option>
-        ))}
-      </select>
-      <select
-        disabled={loading}
-        value={tValue}
-        onChange={(e) => settValue(e.currentTarget.value)}
-        id="inType"
-      >
-        <option key="all" value="all">
-          All
-        </option>
-        {typeList.map((type) => (
-          <option key={type.value} value={type.value}>
-            {type.label}
+          {genList.map((gen) => (
+            <option key={gen.value} value={gen.value}>
+              {gen.label}
+            </option>
+          ))}
+        </Form.Control>
+      </Col>
+      <Col md>
+        <Form.Control
+          as="select"
+          disabled={loading}
+          value={tValue}
+          onChange={(e) => settValue(e.currentTarget.value)}
+          id="inType"
+        >
+          <option key="all" value="all">
+            All
           </option>
-        ))}
-      </select>
-    </div>
+          {typeList.map((type) => (
+            <option key={type.value} value={type.value}>
+              {type.label}
+            </option>
+          ))}
+        </Form.Control>
+      </Col>
+      <Col sm>
+        <Button>Go</Button>
+      </Col>
+    </Row>
   );
 }
 
