@@ -5,17 +5,23 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import GenTypeDropdown from "./GenTypeDropdown";
 import PokemonDropdown from "./PokemonDropdown";
 import Party from "./Party";
 
 function Pokemon() {
-  const [name, setName] = useState("");
-  const [img, setImg] = useState("");
-  const [weight, setWeight] = useState("");
-  const [abilities, setAbilities] = useState([]);
-  const [inPoke, setInPoke] = useState("");
+  const [name, setName] = useState("Pikachu");
+  const [img, setImg] = useState(
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+  );
+  const [weight, setWeight] = useState("60");
+  const [abilities, setAbilities] = useState([
+    { ability: { name: "static" } },
+    { ability: { name: "lightning Rod" } },
+  ]);
+  const [inPoke, setInPoke] = useState("Pikachu");
   const [pokeList, setPokeList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [party, setParty] = useState([]);
@@ -104,52 +110,68 @@ function Pokemon() {
   return (
     <Container>
       <Row>
-        <Card style={{ width: "30%" }}>
-          <Card.Img src={img} alt={name} />
-          <Card.Title>{name}</Card.Title>
-          <Card.Text>
-            <p>Weight: {weightToLb(weight)} lb</p>
-            <p>Abilities:</p>
-            <ol>
-              {abilities.map((abil) => (
-                <li key={abil.ability.name} value={abil.ability.name}>
-                  {capitalize(abil.ability.name, "-", "false")}
-                </li>
-              ))}
-            </ol>
-          </Card.Text>
+        <Col>
+          <Container
+            style={{
+              width: "590px",
+              margin: "0",
+            }}
+          >
+            <Row style={{ alignItems: "center", border: "1px solid black" }}>
+              <Col>
+                <img src={img} alt={name} style={{ width: "275px" }} />
+              </Col>
+              <Col>
+                <h2>{name}</h2>
+                <p>Weight: {weightToLb(weight)} lb</p>
+                <p>Abilities:</p>
+                <ol>
+                  {abilities.map((abil) => (
+                    <li key={abil.ability.name} value={abil.ability.name}>
+                      {capitalize(abil.ability.name, "-", "false")}
+                    </li>
+                  ))}
+                </ol>
+              </Col>
+            </Row>
+            <Row>
+              {party.length < 6 && (
+                <Button
+                  variant="secondary"
+                  onClick={addToParty}
+                  style={{ borderRadius: "0" }}
+                >
+                  Add to My Party
+                </Button>
+              )}
+            </Row>
+          </Container>
 
-          {party.length < 6 && (
-            <Button variant="secondary" onClick={addToParty}>
-              Save to My Party
+          <Card style={{ width: "30%" }}>
+            <p>Direct search: (if you know what you want)</p>
+            <input
+              type="text"
+              id="pokeName"
+              value={inPoke}
+              onChange={handleChange}
+            />
+            <Button variant="primary" onClick={getPokemon}>
+              Generate Pokemon
             </Button>
-          )}
-        </Card>
 
-        <Card style={{ width: "30%" }}>
-          <p>Direct search: (if you know what you want)</p>
-          <input
-            type="text"
-            id="pokeName"
-            value={inPoke}
-            onChange={handleChange}
-          />
-          <Button variant="primary" onClick={getPokemon}>
-            Generate Pokemon
-          </Button>
-
-          <p>Narrow by Generation and/or Type</p>
-          <GenTypeDropdown />
-          <Button variant="secondary" onClick={listPokemon}>
-            Go
-          </Button>
-          <br />
-          <br />
-          <PokemonDropdown list={pokeList} />
-          <Button variant="primary" onClick={pickPokemon}>
-            Generate Pokemon
-          </Button>
-        </Card>
+            <p>Narrow by Generation and/or Type</p>
+            <GenTypeDropdown />
+            <Button variant="secondary" onClick={listPokemon}>
+              Go
+            </Button>
+            <br />
+            <br />
+            <PokemonDropdown list={pokeList} />
+            <Button variant="primary" onClick={pickPokemon}>
+              Generate Pokemon
+            </Button>
+          </Card>
+        </Col>
 
         <Party party={party} />
       </Row>
