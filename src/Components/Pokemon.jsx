@@ -143,12 +143,7 @@ function Pokemon() {
               <h2 style={{ paddingBottom: "10px" }}>Search</h2>
               <InputGroup>
                 <InputGroup.Text>By name:</InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  id="pokeName"
-                  value={inPoke}
-                  onChange={handleChange}
-                />
+                <Form.Control type="text" id="pokeName" onBlur={handleChange} />
               </InputGroup>
 
               <Form style={{ margin: "20px 0" }}>
@@ -170,8 +165,9 @@ function Pokemon() {
             </Row>
           </Container>
         </Col>
-
-        <Party party={party} />
+        <Col>
+          <Party party={party} />
+        </Col>
       </Row>
     </Container>
   );
