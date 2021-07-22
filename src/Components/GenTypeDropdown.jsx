@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-function GenTypeDropdown() {
+function GenTypeDropdown(props) {
   const [loading, setLoading] = React.useState(true);
 
   const [genList, setGens] = useState([{ label: "Loading...", value: "" }]);
@@ -59,15 +59,14 @@ function GenTypeDropdown() {
   }, []);
 
   return (
-    <Row style={{ justifyContent: "stretch" }}>
-      <Col md>
+    <Row>
+      <Col sm={5} style={{ padding: "0 0 0 10px" }}>
         <Form.Control
           as="select"
           disabled={loading}
           value={gValue}
           onChange={(e) => setgValue(e.currentTarget.value)}
           id="inGen"
-          style={{ width: "100%" }}
         >
           <option key="all" value="all">
             All
@@ -79,7 +78,7 @@ function GenTypeDropdown() {
           ))}
         </Form.Control>
       </Col>
-      <Col md>
+      <Col sm={5} style={{ padding: "0 0 0 10px" }}>
         <Form.Control
           as="select"
           disabled={loading}
@@ -97,8 +96,14 @@ function GenTypeDropdown() {
           ))}
         </Form.Control>
       </Col>
-      <Col sm>
-        <Button>Go</Button>
+      <Col sm={2} style={{ padding: "0 10px" }}>
+        <Button
+          variant="secondary"
+          style={{ width: "100%" }}
+          onClick={props.listPokemon}
+        >
+          Go
+        </Button>
       </Col>
     </Row>
   );

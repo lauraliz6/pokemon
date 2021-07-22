@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import Form from "react-bootstrap/Form";
+
 function PokemonDropdown(props) {
   const passPoke = (event) => {
     props.parentCallback(event.target.value);
@@ -24,8 +26,8 @@ function PokemonDropdown(props) {
 
   const list = props.list;
   return (
-    <div>
-      <select id="pokePick" onChange={passPoke}>
+    <Form style={{ margin: "0px 0 30px" }}>
+      <Form.Control as="select" id="pokePick" onChange={passPoke}>
         {list.map((item) => {
           return (
             <option key={item} value={item}>
@@ -33,8 +35,8 @@ function PokemonDropdown(props) {
             </option>
           );
         })}
-      </select>
-    </div>
+      </Form.Control>
+    </Form>
   );
 }
 

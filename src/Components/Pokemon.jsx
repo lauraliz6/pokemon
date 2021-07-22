@@ -137,10 +137,10 @@ function Pokemon() {
               style={{
                 alignItems: "center",
                 border: "1px solid black",
-                padding: "40px",
+                padding: "30px 40px",
               }}
             >
-              <h2>Search</h2>
+              <h2 style={{ paddingBottom: "10px" }}>Search</h2>
               <InputGroup>
                 <InputGroup.Text>By name:</InputGroup.Text>
                 <Form.Control
@@ -151,24 +151,22 @@ function Pokemon() {
                 />
               </InputGroup>
 
-              <Row>
-                <Form>
-                  <Form.Label>Narrow by generation and/or type</Form.Label>
-                  <Col>
-                    <GenTypeDropdown />
-                  </Col>
-                  <Col>
-                    <Button variant="secondary" onClick={listPokemon}>
-                      Go
-                    </Button>
-                  </Col>
-                </Form>
-              </Row>
+              <Form style={{ margin: "20px 0" }}>
+                <Form.Label>Narrow by generation and/or type</Form.Label>
+                <Col>
+                  <GenTypeDropdown listPokemon={listPokemon} />
+                </Col>
+              </Form>
               <PokemonDropdown list={pokeList} parentCallback={handleSelect} />
-
-              <Button variant="primary" onClick={getPokemon}>
-                Generate Pokemon
-              </Button>
+              <Col>
+                <Button
+                  variant="primary"
+                  onClick={getPokemon}
+                  style={{ width: "100%" }}
+                >
+                  Generate Pokemon
+                </Button>
+              </Col>
             </Row>
           </Container>
         </Col>
