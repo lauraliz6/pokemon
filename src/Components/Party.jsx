@@ -28,11 +28,6 @@ function Party(props) {
           <Col>
             <p>{p.name}</p>
           </Col>
-          <Col>
-            <Button variant="outline-light">
-              <img src={trashIcon} alt="trashcan" />
-            </Button>
-          </Col>
         </Row>
       ))}
     </Container>
