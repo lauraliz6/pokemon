@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import GenTypeDropdown from "./GenTypeDropdown";
+import { backendLink } from "./backend";
 
 function Pokemon() {
   const [name, setName] = useState("");
@@ -16,7 +17,7 @@ function Pokemon() {
 
   function getPokemon() {
     axios
-      .get("http://localhost:5000/poke", {
+      .get(backendLink + "poke", {
         crossdomain: true,
         params: { name: inPoke },
       })
@@ -28,7 +29,7 @@ function Pokemon() {
 
   const listPokemon = function (callback) {
     axios
-      .get("http://localhost:5000/list", {
+      .get(backendLink + "list", {
         crossdomain: true,
       })
       .then((response) => {
@@ -61,7 +62,7 @@ function Pokemon() {
     }
     let commonPs;
     axios
-      .get("http://localhost:5000/pokelist", {
+      .get(backendLink + "pokelist", {
         crossdomain: true,
         params: { gen: selectedGen, type: selectedType },
       })

@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+import { backendLink } from "./backend";
+
 function GenTypeDropdown(props) {
   const [loading, setLoading] = React.useState(true);
 
@@ -34,7 +36,7 @@ function GenTypeDropdown(props) {
   useEffect(() => {
     let unmounted = false;
     async function getGensTypes() {
-      const response = await fetch("http://localhost:5000/list");
+      const response = await fetch(backendLink + "list");
       const body = await response.json();
       if (!unmounted) {
         setGens(

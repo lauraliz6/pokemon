@@ -12,6 +12,8 @@ import GenTypeDropdown from "./GenTypeDropdown";
 import PokemonDropdown from "./PokemonDropdown";
 import Party from "./Party";
 
+import { backendLink } from "./backend";
+
 function Pokemon() {
   const [name, setName] = useState("Pikachu");
   const [img, setImg] = useState(
@@ -38,7 +40,7 @@ function Pokemon() {
 
   function getPokemon() {
     axios
-      .get("http://localhost:5000/poke", {
+      .get(backendLink + "poke", {
         crossdomain: true,
         params: { name: inPoke },
       })
@@ -56,7 +58,7 @@ function Pokemon() {
     const enGen = encodeURIComponent(inGen);
     const enType = encodeURIComponent(inType);
     const response = await fetch(
-      `http://localhost:5000/pokelist?gen=${enGen}&type=${enType}`
+      backendLink + `pokelist?gen=${enGen}&type=${enType}`
     );
     const body = await response.json();
     setPokeList(body);
