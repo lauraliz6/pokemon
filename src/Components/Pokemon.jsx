@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import GenTypeDropdown from "./GenTypeDropdown";
 import PokemonDropdown from "./PokemonDropdown";
@@ -24,9 +25,11 @@ function Pokemon() {
     { ability: { name: "static" } },
     { ability: { name: "lightning Rod" } },
   ]);
+
   const [inPoke, setInPoke] = useState("Pikachu");
+  const [pokeLoading, setPokeLoading] = useState(false);
+
   const [pokeList, setPokeList] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [party, setParty] = useState([]);
 
   const handleChange = (e) => {
@@ -39,16 +42,18 @@ function Pokemon() {
   };
 
   function getPokemon() {
+    setPokeLoading(true);
     axios
       .get(backendLink + "poke", {
         crossdomain: true,
-        params: { name: inPoke },
+        params: { name: inPoke.toLowerCase() },
       })
       .then((response) => {
         setName(response.data.name);
         setImg(response.data.img);
         setWeight(response.data.weight);
         setAbilities(response.data.abilities);
+        setPokeLoading(false);
       });
   }
 
@@ -62,7 +67,6 @@ function Pokemon() {
     );
     const body = await response.json();
     setPokeList(body);
-    setLoading(false);
   }
 
   const capitalize = (s, spl, gen) => {
@@ -104,6 +108,12 @@ function Pokemon() {
       <Row>
         <Col style={{ alignItems: "center", width: "590px", margin: "0" }}>
           <Container style={{ padding: "0" }}>
+            <Row>
+              {pokeLoading && <LinearProgress />}
+              {!pokeLoading && (
+                <LinearProgress variant="determinate" value={100} />
+              )}
+            </Row>
             <Row style={{ alignItems: "center", border: "1px solid black" }}>
               <Col>
                 <img src={img} alt={name} style={{ width: "275px" }} />

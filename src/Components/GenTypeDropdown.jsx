@@ -68,6 +68,7 @@ function GenTypeDropdown(props) {
           disabled={loading}
           value={gValue}
           onChange={(e) => setgValue(e.currentTarget.value)}
+          onBlur={(e) => setgValue(e.currentTarget.value)}
           id="inGen"
         >
           <option key="all" value="all">
@@ -86,6 +87,7 @@ function GenTypeDropdown(props) {
           disabled={loading}
           value={tValue}
           onChange={(e) => settValue(e.currentTarget.value)}
+          onBlur={(e) => settValue(e.currentTarget.value)}
           id="inType"
         >
           <option key="all" value="all">
